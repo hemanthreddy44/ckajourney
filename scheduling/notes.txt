@@ -1,0 +1,14 @@
+Manual Scheduling : we Schedule  the specific pod with specific nodename
+
+syntax
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  -  image: nginx
+     name: nginx
+  nodeName: node01

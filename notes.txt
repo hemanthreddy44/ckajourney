@@ -1,3 +1,8 @@
-notes
+
+
+
 hi
-ssds
+how to use selector
+
+command :
+kubectl get pods --selector env=dev
