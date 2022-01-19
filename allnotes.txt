@@ -1,0 +1,114 @@
+application life cycle
+
+we have two deployment startegrys
+1.recreate
+2.rolling update
+
+
+
+default strategy is rolling update followed by  kubernetess
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ environment vairbale  using env
+
+
+
+ apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: webapp-color
+  name: webapp-color
+  namespace: default
+spec:
+  containers:
+  - env:
+    - name: APP_COLOR
+      value: green
+    image: kodekloud/webapp-color
+    name: webapp-color
+
+
+
+using configmap
+
+configmap create command
+
+kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue
+
+kubectl create configmap <configmapname> -- from-literal=<enssv vairables>
+
+
+
+yaml file for pod defination for created configmap
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: webapp-color
+  name: webapp-color
+  namespace: default
+spec:
+  containers:
+  - envFrom:
+    - configMapRef:
+         name: webapp-config-map
+    image: kodekloud/webapp-color
+    name: webapp-color
+
+
+
+
+create a secret
+
+kubectl create secret generic db-secret --from-literal=DB_Host=sql01 --from-literal=DB_User=root --from-literal=DB_Password=password123
+
+create a secret using yaml file
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+  namespace: default
+type: Opaque
+data:
+  DB_Host: c3FsMDE=
+  DB_Password: cGFzc3dvcmQxMjM=
+  DB_User: cm9vdA==
+
+
+
+
+ create a pv using hostpath
+
+
+ apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: pv-log
+spec:
+  persistentVolumeReclaimPolicy: Retain
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 100Mi
+  hostPath:
+    path: /pv/log
